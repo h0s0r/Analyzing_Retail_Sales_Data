@@ -28,12 +28,26 @@ try:
         data=category_sales,
         order=category_sales['Category'],
         errorbar=None,
-    ) #assigning sales as x axis and category as y axis from categorical_sales data
+    ) #assigning sales as x axis and category as y axis from categorical_sales data then Will label both axis and plt and atlast will show the outcome.
     plt.title('Categorical Sales')
     plt.xlabel('Category')
     plt.ylabel('Sales')
     plt.show()
-
+    df['Order Date'] = pd.to_datetime(df['Order Date'], format = '%d/%m/%Y') # Conversion of Order Date to proper DateTime format.
+    df['Order Month'] = df['Order Date'].dt.to_period('M') # Adding a column that will contain then month of sale
+    print('Converted Order Date to datetime format and added Order Month Column')
+    monthly_sales = df.groupby('Order Month')['Sales'].sum().reset_index() # Creating a monthly sales dataset from main dataset by grouping order month and taking the sum of all sales in each
+    monthly_sales['Order Month'] = monthly_sales['Order Month'].astype(str) # Converting Order Month back to str to create a chart
+    print(f'Monthly Sales DataSet : {monthly_sales}')
+    print('Plotting monthly sales trend data : ')
+    plt.figure(figsize = (15,7)) # setting size of chart of 15*7
+    sns.lineplot(x='Order Month',y='Sales', data=monthly_sales, marker='o')
+    plt.title('Monthly Sales')
+    plt.xlabel('Month')
+    plt.ylabel('Sales')
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.show()
 
 except FileNotFoundError:
     print("File not found.")
