@@ -1,3 +1,5 @@
+# This is a personal standardised git ignore please check before using and use on your own risk
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
